@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 from gym import spaces
 from gym.utils import seeding
+import copy
 
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
@@ -197,6 +198,10 @@ class PortfolioOptimizationEnv(gym.Env):
         self._portfolio_value = self._initial_amount
         self._terminal = False
 
+        # Use this to save the state in the last terminal state in case the environment resets 
+        self._terminal_asset_memory = None
+        self._terminal_date_memory = None
+
     def step(self, actions):
         """Performs a simulation step.
 
@@ -277,6 +282,10 @@ class PortfolioOptimizationEnv(gym.Env):
                 show=False,
                 savefig=self._results_file / "portfolio_summary.png",
             )
+
+            # Save the asset memory in the terminal state before the environment is reset
+            self._terminal_asset_memory = copy.deepcopy(self._asset_memory)
+            self._terminal_date_memory = copy.deepcopy(self._date_memory)
 
             if self._new_gym_api:
                 return self._state, self._reward, self._terminal, False, self._info
