@@ -4,7 +4,7 @@ from typing import Any, Dict, Optional, Tuple, Union, List
 import numpy as np
 import pandas as pd
 
-# These online portfolio implemntations are based on the alorithms described in:
+# These online portfolio implementations are based on the alorithms described in:
 # Online Portfolio Selection: A Survey by Bin Li, Steven C. H. Hoi
 # https://arxiv.org/abs/1212.2129
 

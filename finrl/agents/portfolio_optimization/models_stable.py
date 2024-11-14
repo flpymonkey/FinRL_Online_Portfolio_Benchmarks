@@ -1,6 +1,6 @@
 from stable_baselines3 import PPO, A2C
 
-from .online import CRPModel, BAHModel, BCRPModel, OLMARModel, RMRModel, BNNModel
+from benchmarks import CRPModel, BAHModel, BCRPModel, OLMARModel, RMRModel, BNNModel
 
 from stable_baselines3.common.callbacks import BaseCallback
 
