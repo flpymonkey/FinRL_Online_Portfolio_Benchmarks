@@ -21,6 +21,7 @@ class CRPModel:
             target_weights: List[float] = None, # If none, default to uniform weights
             tensorboard_log: Optional[str] = None,
             verbose: int = 0,
+            seed: Optional[int] = None,
             ) -> None:
         
         # Super simple algorithm, we only need the environment
@@ -88,6 +89,7 @@ class BAHModel:
             target_weights: List[float] = None, # If none, default to uniform weights
             tensorboard_log: Optional[str] = None,
             verbose: int = 0,
+            seed: Optional[int] = None,
             ) -> None:
         
         # Super simple algorithm, we only need the environment
@@ -166,6 +168,7 @@ class BCRPModel:
             policy_kwargs: Optional[Dict[str, Any]] = None, # policy_kwargs doesnt matter here
             tensorboard_log: Optional[str] = None,
             verbose: int = 0,
+            seed: Optional[int] = None,
             ) -> None:
         
         # Super simple algorithm, we only need the environment
@@ -238,6 +241,7 @@ class OLMARModel:
             target_weights: List[float] = None, # If none, default to uniform weights
             tensorboard_log: Optional[str] = None,
             verbose: int = 0,
+            seed: Optional[int] = None,
             window=5, 
             eps=10,
             ) -> None:
@@ -362,6 +366,7 @@ class RMRModel:
             target_weights: List[float] = None, # If none, default to uniform weights
             tensorboard_log: Optional[str] = None,
             verbose: int = 0,
+            seed: Optional[int] = None,
             window=5, 
             eps=10,
             tau=0.001 # L1 Normilization parameter
@@ -496,6 +501,7 @@ class BNNModel:
             target_weights: List[float] = None, # If none, default to uniform weights
             tensorboard_log: Optional[str] = None,
             verbose: int = 0,
+            seed: Optional[int] = None,
             window=5, # Sequence length
             neighbors=10 # Number of neighbors
             ) -> None:
