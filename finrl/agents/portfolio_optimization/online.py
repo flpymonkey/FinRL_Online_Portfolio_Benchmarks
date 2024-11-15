@@ -101,8 +101,6 @@ class BAHModel:
         self.target_weights = np.ones(self.portfolio_length-1) / (self.portfolio_length-1)  # target weights for each asset
         # Append 0 to the beginning, for an empty cash account
         self.target_weights = np.insert(self.target_weights, 0, 0)
-
-        print(self.target_weights)
         
         if target_weights is not None:
             # Assert that the portfolio length matches (index 0 represents cash account)

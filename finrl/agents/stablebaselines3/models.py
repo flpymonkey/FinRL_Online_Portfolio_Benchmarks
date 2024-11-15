@@ -15,28 +15,11 @@ from stable_baselines3.common.noise import NormalActionNoise
 from stable_baselines3.common.noise import OrnsteinUhlenbeckActionNoise
 from stable_baselines3.common.vec_env import DummyVecEnv
 
-from .online import CRPModel, BAHModel, BCRPModel, OLMARModel, RMRModel, BNNModel
-
 from finrl import config
 from finrl.meta.env_stock_trading.env_stocktrading import StockTradingEnv
 from finrl.meta.preprocessor.preprocessors import data_split
 
-MODELS = {
-    # Stable Baseline Models
-    "a2c": A2C, 
-    "ddpg": DDPG, 
-    "td3": TD3, 
-    "sac": SAC, 
-    "ppo": PPO,
-
-    # Benchmark models
-    "crp": CRPModel, 
-    "bah": BAHModel, 
-    "bcrp": BCRPModel, 
-    "olmar": OLMARModel,
-    "rmr": RMRModel,
-    "bnn": BNNModel
-    }
+MODELS = {"a2c": A2C, "ddpg": DDPG, "td3": TD3, "sac": SAC, "ppo": PPO}
 
 MODEL_KWARGS = {x: config.__dict__[f"{x.upper()}_PARAMS"] for x in MODELS.keys()}
 
