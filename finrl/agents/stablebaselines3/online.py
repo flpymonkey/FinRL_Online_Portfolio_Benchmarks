@@ -16,7 +16,7 @@ class CRPModel:
             self, 
             env: Union[GymEnv, str],
             policy: Any, # Policy doesnt matter here
-            device: str, # device doesnt matter here
+            device: str = None, # device doesnt matter here
             policy_kwargs: Optional[Dict[str, Any]] = None, # policy_kwargs doesnt matter here
             target_weights: List[float] = None, # If none, default to uniform weights
             tensorboard_log: Optional[str] = None,
@@ -84,7 +84,7 @@ class BAHModel:
             self, 
             env: Union[GymEnv, str],
             policy: Any, # Policy doesnt matter here
-            device: str, # device doesnt matter here
+            device: str = None, # device doesnt matter here
             policy_kwargs: Optional[Dict[str, Any]] = None, # policy_kwargs doesnt matter here
             target_weights: List[float] = None, # If none, default to uniform weights
             tensorboard_log: Optional[str] = None,
@@ -164,7 +164,7 @@ class BCRPModel:
             self, 
             env: Union[GymEnv, str],
             policy: Any, # Policy doesnt matter here
-            device: str, # device doesnt matter here
+            device: str = None, # device doesnt matter here
             policy_kwargs: Optional[Dict[str, Any]] = None, # policy_kwargs doesnt matter here
             tensorboard_log: Optional[str] = None,
             verbose: int = 0,
@@ -236,7 +236,7 @@ class OLMARModel:
             self, 
             env: Union[GymEnv, str],
             policy: Any, # Policy doesnt matter here
-            device: str, # device doesnt matter here
+            device: str = None, # device doesnt matter here
             policy_kwargs: Optional[Dict[str, Any]] = None, # policy_kwargs doesnt matter here
             target_weights: List[float] = None, # If none, default to uniform weights
             tensorboard_log: Optional[str] = None,
@@ -361,7 +361,7 @@ class RMRModel:
             self, 
             env: Union[GymEnv, str],
             policy: Any, # Policy doesnt matter here
-            device: str, # device doesnt matter here
+            device: str = None, # device doesnt matter here
             policy_kwargs: Optional[Dict[str, Any]] = None, # policy_kwargs doesnt matter here
             target_weights: List[float] = None, # If none, default to uniform weights
             tensorboard_log: Optional[str] = None,
@@ -496,7 +496,7 @@ class BNNModel:
             self, 
             env: Union[GymEnv, str],
             policy: Any, # Policy doesnt matter here
-            device: str, # device doesnt matter here
+            device: str = None, # device doesnt matter here
             policy_kwargs: Optional[Dict[str, Any]] = None, # policy_kwargs doesnt matter here
             target_weights: List[float] = None, # If none, default to uniform weights
             tensorboard_log: Optional[str] = None,
