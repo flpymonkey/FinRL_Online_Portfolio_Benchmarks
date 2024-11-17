@@ -199,6 +199,7 @@ class PortfolioOptimizationEnv(gym.Env):
         self._terminal = False
 
         # Use this to save the state in the last terminal state in case the environment resets 
+        self._terminal_action_memory = None
         self._terminal_asset_memory = None
         self._terminal_date_memory = None
 
@@ -286,6 +287,10 @@ class PortfolioOptimizationEnv(gym.Env):
             # Save the asset memory in the terminal state before the environment is reset
             self._terminal_asset_memory = copy.deepcopy(self._asset_memory)
             self._terminal_date_memory = copy.deepcopy(self._date_memory)
+            self._terminal_action_memory = copy.deepcopy(self._actions_memory)
+
+            file_path = './action_dump/actions' + str(len(self._terminal_action_memory)) + '.csv'
+            np.savetxt(file_path, self._terminal_action_memory, delimiter=',', fmt='%.6f')
 
             if self._new_gym_api:
                 return self._state, self._reward, self._terminal, False, self._info
@@ -299,7 +304,13 @@ class PortfolioOptimizationEnv(gym.Env):
             if math.isclose(np.sum(actions), 1, abs_tol=1e-6) and np.min(actions) >= 0:
                 weights = actions
             else:
-                weights = self._softmax_normalization(actions)
+                action_sum = np.sum(actions)
+                weights = actions / action_sum
+                if not action_sum: # TODO fix this
+                    weights = np.zeros(len(weights))
+                    weights[0] = 1
+                # print(weights)
+                # weights = self._softmax_normalization(actions)
 
             # save initial portfolio weights for this time step
             self._actions_memory.append(weights)
@@ -372,7 +383,7 @@ class PortfolioOptimizationEnv(gym.Env):
             # Define portfolio return
             self._reward = portfolio_reward
             self._reward = self._reward * self._reward_scaling
-
+        
         if self._new_gym_api:
             return self._state, self._reward, self._terminal, False, self._info
         return self._state, self._reward, self._terminal, self._info
@@ -664,3 +675,4 @@ class PortfolioOptimizationEnv(gym.Env):
         e = DummyVecEnv([lambda: self] * env_number)
         obs = e.reset()
         return e, obs
+    
