@@ -3,6 +3,8 @@ from stable_baselines3 import PPO, A2C
 from .online import CRPModel, BAHModel, BCRPModel, OLMARModel, RMRModel, BNNModel
 
 from stable_baselines3.common.callbacks import BaseCallback
+from stable_baselines3.common.callbacks import CheckpointCallback
+
 
 MODELS = {
     "ppo": PPO, 
@@ -14,32 +16,6 @@ MODELS = {
     "rmr": RMRModel,
     "bnn": BNNModel
 }
-
-class TensorboardCallback(BaseCallback):
-    """
-    Custom callback for plotting additional values in tensorboard.
-    """
-
-    def __init__(self, verbose=0):
-        super().__init__(verbose)
-
-    def _on_step(self) -> bool:
-        try:
-            self.logger.record(key="train/reward", value=self.locals["rewards"][0])
-
-            state = self.locals['obs']
-            action = self.locals['actions']
-            print(f"State: {state}, Action: {action}")
-            return True
-
-        except BaseException as error:
-            try:
-                self.logger.record(key="train/reward", value=self.locals["reward"][0])
-
-            except BaseException as inner_error:
-                # Handle the case where neither "rewards" nor "reward" is found
-                self.logger.record(key="train/reward", value=None)
-        return True
 
 class DRLStableAgent:
     """Implementation for DRL algorithms for portfolio optimization.
@@ -113,9 +89,17 @@ class DRLStableAgent:
 
         print("Max number of time steps in an episode: ", max_steps)
 
+        checkpoint_callback = CheckpointCallback(
+            save_freq=1000000,
+            save_path="./results/",
+            name_prefix="rl_model",
+            save_replay_buffer=True,
+            save_vecnormalize=True,
+        )
+
         model.learn(
             total_timesteps = max_steps * episodes,
-            callback=TensorboardCallback(),
+            callback=checkpoint_callback,
             tb_log_name=tb_log_name,
             progress_bar=True
         )
