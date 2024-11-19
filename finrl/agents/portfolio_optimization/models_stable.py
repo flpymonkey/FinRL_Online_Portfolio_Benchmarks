@@ -92,7 +92,7 @@ class DRLStableAgent:
         checkpoint_callback = CheckpointCallback(
             save_freq=1000000,
             save_path="./results/",
-            name_prefix="rl_model",
+            name_prefix="model_checkpoint",
             save_replay_buffer=True,
             save_vecnormalize=True,
         )
