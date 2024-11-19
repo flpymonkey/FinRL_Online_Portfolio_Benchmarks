@@ -227,6 +227,7 @@ class SCRPModel:
             policy: Any, # Policy doesnt matter here
             device: str, # device doesnt matter here
             policy_kwargs: Optional[Dict[str, Any]] = None, # policy_kwargs doesnt matter here
+            price_history: Optional[pd.DataFrame] = None
             ) -> None:
         
         # Super simple algorithm, we only need the environment
@@ -239,6 +240,10 @@ class SCRPModel:
         self.portfolio_length = self.action_space_shape[0]
         
         self.price_history = pd.DataFrame()
+
+        # If available, set additional price history
+        if price_history is not None:
+            self.price_history = price_history
 
         # Start with uniform portfolio weights
         self.current_weights = np.ones(self.portfolio_length-1) / (self.portfolio_length-1)  # target weights for each asset
