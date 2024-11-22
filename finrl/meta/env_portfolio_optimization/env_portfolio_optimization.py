@@ -90,6 +90,7 @@ class PortfolioOptimizationEnv(gym.Env):
         time_window=1,
         cwd="./",
         new_gym_api=False,
+        no_cash=False,
     ):
         """Initializes environment's instance.
 
@@ -139,6 +140,7 @@ class PortfolioOptimizationEnv(gym.Env):
         self._valuation_feature = valuation_feature
         self._cwd = Path(cwd)
         self._new_gym_api = new_gym_api
+        self._no_cash = no_cash
 
         # results file
         self._results_file = self._cwd / "results" / "rl"
@@ -304,11 +306,18 @@ class PortfolioOptimizationEnv(gym.Env):
             if math.isclose(np.sum(actions), 1, abs_tol=1e-6) and np.min(actions) >= 0:
                 weights = actions
             else:
+                if self._no_cash:
+                    actions[0] = 0
+                
                 action_sum = np.sum(actions)
                 weights = actions / action_sum
-                if not action_sum: # TODO fix this
-                    weights = np.zeros(len(weights))
-                    weights[0] = 1
+                if not action_sum:
+
+                    # Default to a uniform protfolio if the model estimates all zeros
+                    uniform_value = 1.0 / (len(weights) - 1)
+                    uniform_array = np.full(len(weights) - 1, uniform_value)
+                    weights = np.insert(uniform_array, 0, 0)
+                    
                 # print(weights)
                 # weights = self._softmax_normalization(actions)
 
