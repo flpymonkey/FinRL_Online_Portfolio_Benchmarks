@@ -29,7 +29,7 @@ except ModuleNotFoundError:
     )
 
 
-class PortfolioOptimizationEnv(gym.Env):
+class PortfolioOptimizationPPOEnv(gym.Env):
     """A portfolio allocation environment for OpenAI gym.
 
     This environment simulates the interactions between an agent and the financial market
@@ -304,6 +304,8 @@ class PortfolioOptimizationEnv(gym.Env):
             if math.isclose(np.sum(actions), 1, abs_tol=1e-6) and np.min(actions) >= 0:
                 weights = actions
             else:
+
+                # FOR PPO we altered this normalization method
                 action_sum = np.sum(actions)
                 weights = actions / action_sum
                 if not action_sum:
