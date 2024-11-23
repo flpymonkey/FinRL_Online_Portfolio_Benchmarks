@@ -307,9 +307,6 @@ class PortfolioOptimizationEnv(gym.Env):
                 weights = actions
             else:
                 weights = self._softmax_normalization(actions)
-                    
-                # print(weights)
-                # weights = self._softmax_normalization(actions)
 
             # save initial portfolio weights for this time step
             self._actions_memory.append(weights)

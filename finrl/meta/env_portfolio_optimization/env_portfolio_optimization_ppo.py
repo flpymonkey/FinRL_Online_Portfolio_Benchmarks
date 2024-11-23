@@ -304,17 +304,11 @@ class PortfolioOptimizationEnv(gym.Env):
             if math.isclose(np.sum(actions), 1, abs_tol=1e-6) and np.min(actions) >= 0:
                 weights = actions
             else:
-                if self._no_cash:
-                    actions[0] = 0
-                
                 action_sum = np.sum(actions)
                 weights = actions / action_sum
                 if not action_sum:
-
-                    # Default to a uniform protfolio if the model estimates all zeros
-                    uniform_value = 1.0 / (len(weights) - 1)
-                    uniform_array = np.full(len(weights) - 1, uniform_value)
-                    weights = np.insert(uniform_array, 0, 0)
+                    weights = np.zeros(len(weights))
+                    weights[0] = 1
                     
                 # print(weights)
                 # weights = self._softmax_normalization(actions)
