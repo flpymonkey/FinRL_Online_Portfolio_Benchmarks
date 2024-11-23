@@ -279,6 +279,7 @@ class PortfolioOptimizationEnv(gym.Env):
                 )
             )
             print("Sharpe ratio: {}".format(qs.stats.sharpe(metrics_df["returns"])))
+            print("Total commission cost: {}".format(self._total_transaction_cost))
             print("=================================")
 
             qs.plots.snapshot(
