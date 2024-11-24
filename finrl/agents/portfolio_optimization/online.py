@@ -21,6 +21,9 @@ class CRPModel:
             target_weights: List[float] = None # If none, default to uniform weights
             ) -> None:
         
+        # WARNING: target weigghts are reordered in the portfolio opimization environment alphabetically
+        # Be careful that tartget_weights are in the correct order when passed in here..
+        
         # Super simple algorithm, we only need the environment
         assert env is not None 
         self.env = env
