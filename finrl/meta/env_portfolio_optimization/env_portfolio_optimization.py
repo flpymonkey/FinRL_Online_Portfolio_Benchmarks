@@ -90,7 +90,7 @@ class PortfolioOptimizationEnv(gym.Env):
         time_window=1,
         cwd="./",
         new_gym_api=False,
-        no_cash=False,
+        throw_softmax_error=True
     ):
         """Initializes environment's instance.
 
@@ -140,7 +140,7 @@ class PortfolioOptimizationEnv(gym.Env):
         self._valuation_feature = valuation_feature
         self._cwd = Path(cwd)
         self._new_gym_api = new_gym_api
-        self._no_cash = no_cash
+        self._throw_softmax_error = throw_softmax_error
 
         # results file
         self._results_file = self._cwd / "results" / "rl"
@@ -308,6 +308,8 @@ class PortfolioOptimizationEnv(gym.Env):
             if math.isclose(np.sum(actions), 1, abs_tol=1e-6) and np.min(actions) >= 0:
                 weights = actions
             else:
+                if self._throw_softmax_error:
+                    raise ValueError("We should not softmax actions!")
                 weights = self._softmax_normalization(actions)
 
             # save initial portfolio weights for this time step
