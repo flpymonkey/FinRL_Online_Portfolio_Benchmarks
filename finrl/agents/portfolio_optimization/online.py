@@ -182,8 +182,12 @@ class BCRPModel:
         # Pivot the DataFrame 
         pivoted_df = self._full_hindsight_prices.pivot(index='date', columns='tic', values='close') 
 
+        # Calculate the price ratios
+        price_ratios = pivoted_df.pct_change() + 1
+        price_ratios.dropna(inplace=True)
+        
         # Get the magic weights
-        self.target_weights = np.array(optimize_log_returns(pivoted_df))
+        self.target_weights = np.array(optimize_log_returns(price_ratios))
         # Assume no cash
         self.target_weights = np.insert(self.target_weights, 0, 0)
 
