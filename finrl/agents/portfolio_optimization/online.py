@@ -310,8 +310,12 @@ class SCRPModel:
             actions = action_weights.reshape(1, self.portfolio_length)
             return actions, None
         
+        # Calculate the price ratios
+        price_ratios = price_history.pct_change() + 1
+        price_ratios.dropna(inplace=True)
+
         # Find the optimal portfolio over the window price history
-        self.current_weights = np.array(optimize_log_returns(price_history))
+        self.current_weights = np.array(optimize_log_returns(price_ratios))
 
         assert np.isclose(self.current_weights.sum(), 1), "The array does not sum up to one."
 
@@ -691,8 +695,12 @@ class BNNModel:
 
         neighbor_history = price_history.iloc[[price_history.index.get_loc(i) + 1 for i in neighbor_indexes]]
         
+        # Calculate the price ratios
+        price_ratios = neighbor_history.pct_change() + 1
+        price_ratios.dropna(inplace=True)
+
         # Find the optimal portfolio over the nearest neighbor price history
-        self.current_weights = np.array(optimize_log_returns(neighbor_history))
+        self.current_weights = np.array(optimize_log_returns(price_ratios))
 
         assert np.isclose(self.current_weights.sum(), 1), "The array does not sum up to one."
 
