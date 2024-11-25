@@ -747,10 +747,11 @@ def optimize_log_returns(
     assert prices.notnull().all().all()
 
     x_0 = np.ones(prices.shape[1]) / float(prices.shape[1])
-    
+
     # Using price returns here.
     objective = lambda b: -np.sum(np.log(np.maximum(np.dot(prices - 1, b) + 1, 0.0001)))
 
+    # We do not allow this portfolio to hold cash
     cons = ({"type": "eq", "fun": lambda b: 1 - sum(b)},)
 
     # problem optimization
@@ -764,4 +765,4 @@ def optimize_log_returns(
 
     if res.success:
         return res.x
-    raise ValueError("Could not find an optimal value using the BCRP algorithm.")
+    raise ValueError("Could not find an optimal value when optimizing over prices.")
