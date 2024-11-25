@@ -1,4 +1,4 @@
-from stable_baselines3 import PPO, A2C
+from stable_baselines3 import PPO
 
 from stable_baselines3.common.callbacks import BaseCallback
 from stable_baselines3.common.callbacks import CheckpointCallback
@@ -28,7 +28,6 @@ from .online import CRPModel, BAHModel, BCRPModel, SCRPModel, OLMARModel, RMRMod
 
 MODELS = {
     "ppo": PPO, 
-    "a2c": A2C, 
     "crp": CRPModel, 
     "bah": BAHModel, 
     "bcrp": BCRPModel,

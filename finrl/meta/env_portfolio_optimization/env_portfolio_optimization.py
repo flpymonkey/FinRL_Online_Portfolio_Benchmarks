@@ -419,6 +419,7 @@ class PortfolioOptimizationEnv(gym.Env):
             self._time_index
         )
         self._portfolio_value = self._initial_amount
+        self._total_transaction_cost = 0
         self._terminal = False
 
         if self._new_gym_api:
