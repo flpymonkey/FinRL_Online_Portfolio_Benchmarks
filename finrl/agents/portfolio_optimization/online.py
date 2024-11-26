@@ -303,19 +303,15 @@ class SCRPModel:
         for name, s in self.price_history.items():
             init_val = s.loc[s.first_valid_index()]
             r[name] = s / init_val
-        price_history = pd.DataFrame(r)
+        normalized_price_history = pd.DataFrame(r)
 
-        if len(price_history) <= 1:
+        if len(normalized_price_history) <= 1:
             action_weights = self.current_weights
             actions = action_weights.reshape(1, self.portfolio_length)
             return actions, None
-        
-        # Calculate the price ratios
-        price_ratios = price_history.pct_change() + 1
-        price_ratios.dropna(inplace=True)
 
         # Find the optimal portfolio over the window price history
-        self.current_weights = np.array(optimize_log_returns(price_ratios))
+        self.current_weights = np.array(optimize_log_returns(normalized_price_history))
 
         assert np.isclose(self.current_weights.sum(), 1), "The array does not sum up to one."
 
@@ -682,25 +678,21 @@ class BNNModel:
         for name, s in self.price_history.items():
             init_val = s.loc[s.first_valid_index()]
             r[name] = s / init_val
-        price_history = pd.DataFrame(r)
+        normalized_price_history = pd.DataFrame(r)
 
         # Window is too short, use cash only
-        if len(price_history) < self.min_history + 1:
+        if len(normalized_price_history) < self.min_history + 1:
             weights = self.current_weights
             action_weights = np.insert(weights, 0, 1)
             actions = action_weights.reshape(1, self.portfolio_length)
             return actions, None
         
-        neighbor_indexes = self.find_neighbors(price_history)
+        neighbor_indexes = self.find_neighbors(normalized_price_history)
 
-        neighbor_history = price_history.iloc[[price_history.index.get_loc(i) + 1 for i in neighbor_indexes]]
-        
-        # Calculate the price ratios
-        price_ratios = neighbor_history.pct_change() + 1
-        price_ratios.dropna(inplace=True)
+        neighbor_history = normalized_price_history.iloc[[normalized_price_history.index.get_loc(i) + 1 for i in neighbor_indexes]]
 
         # Find the optimal portfolio over the nearest neighbor price history
-        self.current_weights = np.array(optimize_log_returns(price_ratios))
+        self.current_weights = np.array(optimize_log_returns(neighbor_history))
 
         assert np.isclose(self.current_weights.sum(), 1), "The array does not sum up to one."
 
